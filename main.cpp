@@ -3,16 +3,23 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <cstdlib>
+#include <algorithm>
 #include <vector>
 #include <cstring>
+#include <cstdlib>
+#include <cstdint>
 #include <optional>
+#include <set>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
 const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"
+};
+
+const std::vector<const char*> deviceExtensions = {
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
 #ifdef NDEBUG
@@ -235,8 +242,23 @@ private:
     bool isDeviceSuitable(VkPhysicalDevice device) {
         QueueFamilyIndices indices = findQueueFamilies(device);
 
-		return indices.isComplete();
+		bool extensionsSupported = checkDeviceExtensionSupport(device);
+
+		return indices.isComplete() && extensionsSupported;;
     }
+
+	//Checks device for extension support
+	bool checkDeviceExtensionSupport(VkPhysicalDevice device) {
+		uint32_t extensionCount;
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+
+		std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+		
+		return true;
+	}
 
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
         createInfo = {};
