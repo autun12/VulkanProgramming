@@ -1,20 +1,22 @@
 # Vulkan Programming
 
-####Just messing around in vulkan
+#### Just messing around in vulkan
 
-##Prerequisites
+## Prerequisites
 
 You may need to run the install commands with `sudo` 
 
-#Ubuntu
+# Ubuntu
 `apt-get install libgflw3-dev libvulkan-dev and pkg-config`
 
-#Arch
+# Arch
 `pacman -S vulkan-devel glfw-x11` if you are using wayland install `glfw-wayland` 
 
-#Building code
+# Building code
 run `make`
 
-#Run code
+# Run code
 `chmod +x run.sh`
 `./run.sh`
+
+You should change the VULKAN_SDK_PATH variable in the makefile with where ever your vulkansdk is placed
